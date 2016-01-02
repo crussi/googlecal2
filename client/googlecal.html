@@ -1,0 +1,41 @@
+<head>
+  <title>googlecal</title>
+    <!--<script src="https://apis.google.com/js/client.js"></script>-->
+</head>
+
+<body>
+  <h1>Welcome to Meteor!</h1>
+
+  {{> hello}}
+</body>
+
+<template name="hello">
+    {{> loginButtons}}
+    <button id="googlelogin">Login with Google</button>
+    <span>Authorize access to Google Calendar API</span>
+
+    <p>You've pressed the button {{counter}} times.</p>
+    <div id="authorize-div" style="display: none">
+        <p>authorized</p>
+    </div>
+    {{#each calendarEvents}}
+        {{> calEvent}}
+    {{/each}}
+</template>
+<template name="calendar">
+    <p>{{summary}}</p>
+    {{#each this.events}}
+        {{>event}}
+    {{/each}}
+</template>
+<template name="event">
+    <p style="margin-left:20px">{{summary}}</p>
+</template>
+<template name="calEvent">
+    {{#if start.hasTime}}
+        <p style="margin-left:20px">{{calendarName}} - {{summary}} {{startdate}}  {{moFormat start.dateTime 'llll'}}</p>
+    {{else}}
+        <p style="margin-left:20px">{{calendarName}} - {{summary}}</p>
+    {{/if}}
+
+</template>
