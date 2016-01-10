@@ -72,6 +72,7 @@ Calendar = {
             //_.extend(calendars[i],{events:[]});
 
             gcalevents = this._getCalendarEvents(user, calevtopts, calendars[i].id);
+            winston.debug('server Calendar.getEvents gcalevents.len: ' + gcalevents.length);
             for (j = 0; j < gcalevents.length; j++) {
                 console.log('cal event: ' + gcalevents[j].summary);
                 //calevent = _.extend({},CalendarEvent);

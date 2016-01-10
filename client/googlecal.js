@@ -1,6 +1,6 @@
 // generate a url that asks permissions for Google+ and Google Calendar scopes
-var winston = Winston;
-winston.level = 'debug';
+//var winston = Winston;
+//winston.level = 'debug';
 
 var scopes = ['email',
   'https://www.googleapis.com/auth/plus.me',
@@ -9,7 +9,20 @@ var scopes = ['email',
 
 //Meteor.subscribe('calendar-list');
 Meteor.subscribe('calendar-events');
+Meteor.subscribe('user');
 
+Meteor.setInterval( function () {
+    var currentdate = new Date(); 
+    var datetime = "Last Sync: " + currentdate.getDate() + "/"
+                    + (currentdate.getMonth()+1)  + "/" 
+                    + currentdate.getFullYear() + " @ "  
+                    + currentdate.getHours() + ":"  
+                    + currentdate.getMinutes() + ":" 
+                    + currentdate.getSeconds(); 
+    console.log("client side time: " + datetime);
+    //Winston.debug("client side time: " + datetime);
+    Meteor.subscribe('calendar-events',datetime);
+}, 30000 );
 // counter starts at 0
 Session.setDefault('counter', 0);
 
@@ -19,6 +32,7 @@ Template.hello.helpers({
   },
 
   calendarList: function () {
+    console.log('calendarList start');
     var list = CalendarList.findOne({});
     if (list && list.calendars) {
       console.log('calendarList displayed');
@@ -29,6 +43,7 @@ Template.hello.helpers({
     }
   },
   calendarEvents: function () {
+    console.log('calendarEvents start');
     var list = CalendarEvents.findOne({});
     if (list && list.calevents) {
       console.log('calendarEvents displayed');
@@ -57,6 +72,12 @@ Template.hello.events({
         console.log('google login success');//Meteor.user().services.google.refreshToken;
       }
     });
-  }
+  },
+  'click button#googlelogout': function(e) {
+    e.preventDefault();
+    Meteor.logout(function(err){
+      console.log('user logged out');
+    });
+  }   
 });
 
