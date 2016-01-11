@@ -11,18 +11,18 @@ var scopes = ['email',
 Meteor.subscribe('calendar-events');
 Meteor.subscribe('user');
 
-Meteor.setInterval( function () {
-    var currentdate = new Date(); 
-    var datetime = "Last Sync: " + currentdate.getDate() + "/"
-                    + (currentdate.getMonth()+1)  + "/" 
-                    + currentdate.getFullYear() + " @ "  
-                    + currentdate.getHours() + ":"  
-                    + currentdate.getMinutes() + ":" 
-                    + currentdate.getSeconds(); 
-    console.log("client side time: " + datetime);
-    //Winston.debug("client side time: " + datetime);
-    Meteor.subscribe('calendar-events',datetime);
-}, 30000 );
+//Meteor.setInterval( function () {
+//    var currentdate = new Date();
+//    var datetime = "Last Sync: " + currentdate.getDate() + "/"
+//                    + (currentdate.getMonth()+1)  + "/"
+//                    + currentdate.getFullYear() + " @ "
+//                    + currentdate.getHours() + ":"
+//                    + currentdate.getMinutes() + ":"
+//                    + currentdate.getSeconds();
+//    console.log("client side time: " + datetime);
+//    //Winston.debug("client side time: " + datetime);
+//    Meteor.subscribe('calendar-events',datetime);
+//}, 30000 );
 // counter starts at 0
 Session.setDefault('counter', 0);
 
@@ -78,6 +78,25 @@ Template.hello.events({
     Meteor.logout(function(err){
       console.log('user logged out');
     });
-  }   
+  },
+  'click button#monitorstart': function(e) {
+        console.log("start monitoring");
+        e.preventDefault();
+        UserStatus.startMonitor({
+          threshold: 30000,
+          interval: 1000,
+          idleOnBlur: true
+        });
+  },
+  'click button#monitorstop': function(e) {
+      console.log("stop monitoring");
+      e.preventDefault();
+      UserStatus.stopMonitor();
+  },
+    'click button#monitorresync': function(e) {
+        console.log("resync");
+        e.preventDefault();
+        TimeSync.resync();
+    }
 });
 

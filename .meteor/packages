@@ -26,3 +26,8 @@ accounts-ui
 accounts-google
 service-configuration
 http
+mizzao:user-status
+mizzao:timesync
+momentjs:moment
+random
+percolate:synced-cron
